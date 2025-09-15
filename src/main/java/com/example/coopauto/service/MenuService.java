@@ -61,19 +61,19 @@ public class MenuService {
 
 
             sb.append(String.format(
-                    "%4d %2d %2d %-3s %2d %-10s %-6s %-8s %-20s %6d %6d %6d%n",
-                    rec.year,                               // 4자리 정수
-                    rec.date.getMonthValue(),               // 2자리
-                    rec.date.getDayOfMonth(),               // 2자리
-                    rec.date.getDayOfWeek().toString().toLowerCase().substring(0, 3), // 요일 3글자
-                    rec.weekOfMonth,                        // 2자리
-                    rec.cafeteria,                          // 최소 10칸
-                    mealKor,                                // 최소 6칸
-                    corner,                                 // 최소 8칸
-                    rec.menuItem.getName(),                 // 메뉴명 20칸
-                    rec.menuItem.getPrice(),                // 숫자 6칸 오른쪽정렬
-                    rec.menuItem.getCost(),                 // 숫자 6칸 오른쪽정렬
-                    rec.menuItem.getEaters()                // 숫자 6칸 오른쪽정렬
+                    "%d\t%d\t%d\t%s\t%d\t%s\t%s\t%s\t%s\t%d\t%d\t\t%d%n",
+                    rec.year,
+                    rec.date.getMonthValue(),
+                    rec.date.getDayOfMonth(),
+                    rec.date.getDayOfWeek().toString().toLowerCase().substring(0, 3),
+                    rec.weekOfMonth,
+                    rec.cafeteria,
+                    mealKor,
+                    corner,
+                    rec.menuItem.getName(),
+                    rec.menuItem.getPrice(),
+                    rec.menuItem.getCost(),   // 원가
+                    rec.menuItem.getEaters()  // 예상식수
             ));
 
 

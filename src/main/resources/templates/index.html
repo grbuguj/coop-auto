@@ -1,10 +1,8 @@
-좋아요
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>식단 변환기 - 웬투밋 스타일</title>
+  <title>식단 변환기</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <style>
     body {
@@ -60,293 +58,122 @@
 <div class="container">
   <h2 class="mb-4 text-center">식단표 자동 변환기</h2>
 
-  <!-- AJAX form -->
-  <form id="menuForm" class="mb-4 shadow p-4 bg-white rounded">
-    <div class="mb-3">
-      <label class="form-label">년도:</label>
-      <input type="number" class="form-control" name="year" value="2025" required>
+  <!-- 좌우 컬럼 동일 높이 -->
+  <div class="row align-items-stretch">
+    <!-- 왼쪽 -->
+    <div class="col-md-6 d-flex">
+      <form id="menuForm" class="shadow p-4 bg-white rounded flex-fill d-flex flex-column">
+        <div class="mb-3">
+          <label class="form-label">년도:</label>
+          <input type="number" class="form-control" name="year" value="2025" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">식당 선택:</label>
+          <select class="form-select" name="cafeteria" id="cafeteriaSelect">
+            <option value="학생식당">학생식당</option>
+            <option value="2호관식당">2호관식당</option>
+            <option value="제1기숙사식당">제1기숙사식당</option>
+            <option value="사범대식당" selected>사범대식당</option>
+          </select>
+        </div>
+
+        <!-- 학생식당 -->
+        <div class="mb-3 meal-table-wrapper hidden">
+          <label class="form-label">요일별 코너 선택 (학생식당):</label>
+          <table class="table meal-table cafeteriaTable" data-cafeteria="학생식당">
+            <thead>
+            <tr>
+              <th>끼니</th>
+              <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td>조식</td><td data-day="mon" data-meal="breakfast"></td><td data-day="tue" data-meal="breakfast"></td><td data-day="wed" data-meal="breakfast"></td><td data-day="thu" data-meal="breakfast"></td><td data-day="fri" data-meal="breakfast"></td><td data-day="sat" data-meal="breakfast"></td><td data-day="sun" data-meal="breakfast"></td></tr>
+            <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
+            <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
+            <tr><td>중식-3코너</td><td data-day="mon" data-meal="lunch_3"></td><td data-day="tue" data-meal="lunch_3"></td><td data-day="wed" data-meal="lunch_3"></td><td data-day="thu" data-meal="lunch_3"></td><td data-day="fri" data-meal="lunch_3"></td><td data-day="sat" data-meal="lunch_3"></td><td data-day="sun" data-meal="lunch_3"></td></tr>
+            <tr><td>중식-4코너</td><td data-day="mon" data-meal="lunch_4"></td><td data-day="tue" data-meal="lunch_4"></td><td data-day="wed" data-meal="lunch_4"></td><td data-day="thu" data-meal="lunch_4"></td><td data-day="fri" data-meal="lunch_4"></td><td data-day="sat" data-meal="lunch_4"></td><td data-day="sun" data-meal="lunch_4"></td></tr>
+            <tr><td>중식-5코너(보쌈)</td><td data-day="mon" data-meal="lunch_5a"></td><td data-day="tue" data-meal="lunch_5a"></td><td data-day="wed" data-meal="lunch_5a"></td><td data-day="thu" data-meal="lunch_5a"></td><td data-day="fri" data-meal="lunch_5a"></td><td data-day="sat" data-meal="lunch_5a"></td><td data-day="sun" data-meal="lunch_5a"></td></tr>
+            <tr><td>중식-5코너(뚝배기찜닭)</td><td data-day="mon" data-meal="lunch_5b"></td><td data-day="tue" data-meal="lunch_5b"></td><td data-day="wed" data-meal="lunch_5b"></td><td data-day="thu" data-meal="lunch_5b"></td><td data-day="fri" data-meal="lunch_5b"></td><td data-day="sat" data-meal="lunch_5b"></td><td data-day="sun" data-meal="lunch_5b"></td></tr>
+            <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2호관식당 -->
+        <div class="mb-3 meal-table-wrapper hidden">
+          <label class="form-label">요일별 코너 선택 (2호관식당):</label>
+          <table class="table meal-table cafeteriaTable" data-cafeteria="2호관식당">
+            <thead>
+            <tr>
+              <th>끼니</th>
+              <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td>조식</td><td data-day="mon" data-meal="breakfast"></td><td data-day="tue" data-meal="breakfast"></td><td data-day="wed" data-meal="breakfast"></td><td data-day="thu" data-meal="breakfast"></td><td data-day="fri" data-meal="breakfast"></td><td data-day="sat" data-meal="breakfast"></td><td data-day="sun" data-meal="breakfast"></td></tr>
+            <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
+            <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
+            <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 제1기숙사식당 -->
+        <div class="mb-3 meal-table-wrapper hidden">
+          <label class="form-label">요일별 코너 선택 (제1기숙사식당):</label>
+          <table class="table meal-table cafeteriaTable" data-cafeteria="제1기숙사식당">
+            <thead>
+            <tr>
+              <th>끼니</th>
+              <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td>조식</td><td data-day="mon" data-meal="breakfast"></td><td data-day="tue" data-meal="breakfast"></td><td data-day="wed" data-meal="breakfast"></td><td data-day="thu" data-meal="breakfast"></td><td data-day="fri" data-meal="breakfast"></td><td data-day="sat" data-meal="breakfast"></td><td data-day="sun" data-meal="breakfast"></td></tr>
+            <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
+            <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
+            <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 사범대식당 -->
+        <div class="mb-3 meal-table-wrapper">
+          <label class="form-label">요일별 코너 선택 (사범대식당):</label>
+          <table class="table meal-table cafeteriaTable" data-cafeteria="사범대식당">
+            <thead>
+            <tr>
+              <th>끼니</th>
+              <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td>조식</td><td data-day="mon" data-meal="breakfast"></td><td data-day="tue" data-meal="breakfast"></td><td data-day="wed" data-meal="breakfast"></td><td data-day="thu" data-meal="breakfast"></td><td data-day="fri" data-meal="breakfast"></td><td data-day="sat" data-meal="breakfast"></td><td data-day="sun" data-meal="breakfast"></td></tr>
+            <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
+            <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
+            <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">원본 텍스트:</label>
+          <textarea class="form-control" name="rawText" rows="8" id="rawText"></textarea>
+        </div>
+      </form>
     </div>
 
-    <div class="mb-3">
-      <label class="form-label">식당 선택:</label>
-      <select class="form-select" name="cafeteria" id="cafeteriaSelect">
-        <option value="학생식당">학생식당</option>
-        <option value="2호관식당">2호관식당</option>
-        <option value="제1기숙사식당">제1기숙사식당</option>
-        <option value="사범대식당" selected>사범대식당</option>
-      </select>
+    <!-- 오른쪽 -->
+    <div class="col-md-6 d-flex">
+      <div class="shadow p-4 bg-white rounded flex-fill d-flex flex-column">
+        <button id="convertBtn" class="btn btn-primary w-100 mb-2">변환하기</button>
+        <h3 class="section-title">결과:</h3>
+        <textarea id="resultBox" class="form-control flex-grow-1" readonly>여기에 결과가 표시됩니다</textarea>
+      </div>
     </div>
-
-    <!-- 학생식당 버전 -->
-    <div class="mb-3 meal-table-wrapper hidden">
-      <label class="form-label">요일별 코너 선택 (학생식당):</label>
-      <table class="table meal-table cafeteriaTable" data-cafeteria="학생식당">
-        <thead>
-        <tr>
-          <th>끼니</th>
-          <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>조식</td>
-          <td data-day="mon" data-meal="breakfast"></td>
-          <td data-day="tue" data-meal="breakfast"></td>
-          <td data-day="wed" data-meal="breakfast"></td>
-          <td data-day="thu" data-meal="breakfast"></td>
-          <td data-day="fri" data-meal="breakfast"></td>
-          <td data-day="sat" data-meal="breakfast"></td>
-          <td data-day="sun" data-meal="breakfast"></td>
-        </tr>
-        <tr>
-          <td>중식-1코너</td>
-          <td data-day="mon" data-meal="lunch_1"></td>
-          <td data-day="tue" data-meal="lunch_1"></td>
-          <td data-day="wed" data-meal="lunch_1"></td>
-          <td data-day="thu" data-meal="lunch_1"></td>
-          <td data-day="fri" data-meal="lunch_1"></td>
-          <td data-day="sat" data-meal="lunch_1"></td>
-          <td data-day="sun" data-meal="lunch_1"></td>
-        </tr>
-        <tr>
-          <td>중식-2코너</td>
-          <td data-day="mon" data-meal="lunch_2"></td>
-          <td data-day="tue" data-meal="lunch_2"></td>
-          <td data-day="wed" data-meal="lunch_2"></td>
-          <td data-day="thu" data-meal="lunch_2"></td>
-          <td data-day="fri" data-meal="lunch_2"></td>
-          <td data-day="sat" data-meal="lunch_2"></td>
-          <td data-day="sun" data-meal="lunch_2"></td>
-        </tr>
-        <tr>
-          <td>중식-3코너</td>
-          <td data-day="mon" data-meal="lunch_3"></td>
-          <td data-day="tue" data-meal="lunch_3"></td>
-          <td data-day="wed" data-meal="lunch_3"></td>
-          <td data-day="thu" data-meal="lunch_3"></td>
-          <td data-day="fri" data-meal="lunch_3"></td>
-          <td data-day="sat" data-meal="lunch_3"></td>
-          <td data-day="sun" data-meal="lunch_3"></td>
-        </tr>
-        <tr>
-          <td>중식-4코너</td>
-          <td data-day="mon" data-meal="lunch_4"></td>
-          <td data-day="tue" data-meal="lunch_4"></td>
-          <td data-day="wed" data-meal="lunch_4"></td>
-          <td data-day="thu" data-meal="lunch_4"></td>
-          <td data-day="fri" data-meal="lunch_4"></td>
-          <td data-day="sat" data-meal="lunch_4"></td>
-          <td data-day="sun" data-meal="lunch_4"></td>
-        </tr>
-        <tr>
-          <td>중식-5코너(보쌈)</td>
-          <td data-day="mon" data-meal="lunch_5a"></td>
-          <td data-day="tue" data-meal="lunch_5a"></td>
-          <td data-day="wed" data-meal="lunch_5a"></td>
-          <td data-day="thu" data-meal="lunch_5a"></td>
-          <td data-day="fri" data-meal="lunch_5a"></td>
-          <td data-day="sat" data-meal="lunch_5a"></td>
-          <td data-day="sun" data-meal="lunch_5a"></td>
-        </tr>
-        <tr>
-          <td>중식-5코너(뚝배기찜닭)</td>
-          <td data-day="mon" data-meal="lunch_5b"></td>
-          <td data-day="tue" data-meal="lunch_5b"></td>
-          <td data-day="wed" data-meal="lunch_5b"></td>
-          <td data-day="thu" data-meal="lunch_5b"></td>
-          <td data-day="fri" data-meal="lunch_5b"></td>
-          <td data-day="sat" data-meal="lunch_5b"></td>
-          <td data-day="sun" data-meal="lunch_5b"></td>
-        </tr>
-        <tr>
-          <td>석식</td>
-          <td data-day="mon" data-meal="dinner"></td>
-          <td data-day="tue" data-meal="dinner"></td>
-          <td data-day="wed" data-meal="dinner"></td>
-          <td data-day="thu" data-meal="dinner"></td>
-          <td data-day="fri" data-meal="dinner"></td>
-          <td data-day="sat" data-meal="dinner"></td>
-          <td data-day="sun" data-meal="dinner"></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 2호관식당 -->
-    <div class="mb-3 meal-table-wrapper hidden">
-      <label class="form-label">요일별 코너 선택 (2호관식당):</label>
-      <table class="table meal-table cafeteriaTable" data-cafeteria="2호관식당">
-        <thead>
-        <tr>
-          <th>끼니</th>
-          <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>조식</td>
-          <td data-day="mon" data-meal="breakfast"></td>
-          <td data-day="tue" data-meal="breakfast"></td>
-          <td data-day="wed" data-meal="breakfast"></td>
-          <td data-day="thu" data-meal="breakfast"></td>
-          <td data-day="fri" data-meal="breakfast"></td>
-          <td data-day="sat" data-meal="breakfast"></td>
-          <td data-day="sun" data-meal="breakfast"></td>
-        </tr>
-        <tr>
-          <td>중식-1코너</td>
-          <td data-day="mon" data-meal="lunch_1"></td>
-          <td data-day="tue" data-meal="lunch_1"></td>
-          <td data-day="wed" data-meal="lunch_1"></td>
-          <td data-day="thu" data-meal="lunch_1"></td>
-          <td data-day="fri" data-meal="lunch_1"></td>
-          <td data-day="sat" data-meal="lunch_1"></td>
-          <td data-day="sun" data-meal="lunch_1"></td>
-        </tr>
-        <tr>
-          <td>중식-2코너</td>
-          <td data-day="mon" data-meal="lunch_2"></td>
-          <td data-day="tue" data-meal="lunch_2"></td>
-          <td data-day="wed" data-meal="lunch_2"></td>
-          <td data-day="thu" data-meal="lunch_2"></td>
-          <td data-day="fri" data-meal="lunch_2"></td>
-          <td data-day="sat" data-meal="lunch_2"></td>
-          <td data-day="sun" data-meal="lunch_2"></td>
-        </tr>
-        <tr>
-          <td>석식</td>
-          <td data-day="mon" data-meal="dinner"></td>
-          <td data-day="tue" data-meal="dinner"></td>
-          <td data-day="wed" data-meal="dinner"></td>
-          <td data-day="thu" data-meal="dinner"></td>
-          <td data-day="fri" data-meal="dinner"></td>
-          <td data-day="sat" data-meal="dinner"></td>
-          <td data-day="sun" data-meal="dinner"></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 제1기숙사식당 -->
-    <div class="mb-3 meal-table-wrapper hidden">
-      <label class="form-label">요일별 코너 선택 (제1기숙사식당):</label>
-      <table class="table meal-table cafeteriaTable" data-cafeteria="제1기숙사식당">
-        <thead>
-        <tr>
-          <th>끼니</th>
-          <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>조식</td>
-          <td data-day="mon" data-meal="breakfast"></td>
-          <td data-day="tue" data-meal="breakfast"></td>
-          <td data-day="wed" data-meal="breakfast"></td>
-          <td data-day="thu" data-meal="breakfast"></td>
-          <td data-day="fri" data-meal="breakfast"></td>
-          <td data-day="sat" data-meal="breakfast"></td>
-          <td data-day="sun" data-meal="breakfast"></td>
-        </tr>
-        <tr>
-          <td>중식-1코너</td>
-          <td data-day="mon" data-meal="lunch_1"></td>
-          <td data-day="tue" data-meal="lunch_1"></td>
-          <td data-day="wed" data-meal="lunch_1"></td>
-          <td data-day="thu" data-meal="lunch_1"></td>
-          <td data-day="fri" data-meal="lunch_1"></td>
-          <td data-day="sat" data-meal="lunch_1"></td>
-          <td data-day="sun" data-meal="lunch_1"></td>
-        </tr>
-        <tr>
-          <td>중식-2코너</td>
-          <td data-day="mon" data-meal="lunch_2"></td>
-          <td data-day="tue" data-meal="lunch_2"></td>
-          <td data-day="wed" data-meal="lunch_2"></td>
-          <td data-day="thu" data-meal="lunch_2"></td>
-          <td data-day="fri" data-meal="lunch_2"></td>
-          <td data-day="sat" data-meal="lunch_2"></td>
-          <td data-day="sun" data-meal="lunch_2"></td>
-        </tr>
-        <tr>
-          <td>석식</td>
-          <td data-day="mon" data-meal="dinner"></td>
-          <td data-day="tue" data-meal="dinner"></td>
-          <td data-day="wed" data-meal="dinner"></td>
-          <td data-day="thu" data-meal="dinner"></td>
-          <td data-day="fri" data-meal="dinner"></td>
-          <td data-day="sat" data-meal="dinner"></td>
-          <td data-day="sun" data-meal="dinner"></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 사범대식당 -->
-    <div class="mb-3 meal-table-wrapper">
-      <label class="form-label">요일별 코너 선택 (사범대식당):</label>
-      <table class="table meal-table cafeteriaTable" data-cafeteria="사범대식당">
-        <thead>
-        <tr>
-          <th>끼니</th>
-          <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>조식</td>
-          <td data-day="mon" data-meal="breakfast"></td>
-          <td data-day="tue" data-meal="breakfast"></td>
-          <td data-day="wed" data-meal="breakfast"></td>
-          <td data-day="thu" data-meal="breakfast"></td>
-          <td data-day="fri" data-meal="breakfast"></td>
-          <td data-day="sat" data-meal="breakfast"></td>
-          <td data-day="sun" data-meal="breakfast"></td>
-        </tr>
-        <tr>
-          <td>중식-1코너</td>
-          <td data-day="mon" data-meal="lunch_1"></td>
-          <td data-day="tue" data-meal="lunch_1"></td>
-          <td data-day="wed" data-meal="lunch_1"></td>
-          <td data-day="thu" data-meal="lunch_1"></td>
-          <td data-day="fri" data-meal="lunch_1"></td>
-          <td data-day="sat" data-meal="lunch_1"></td>
-          <td data-day="sun" data-meal="lunch_1"></td>
-        </tr>
-        <tr>
-          <td>중식-2코너</td>
-          <td data-day="mon" data-meal="lunch_2"></td>
-          <td data-day="tue" data-meal="lunch_2"></td>
-          <td data-day="wed" data-meal="lunch_2"></td>
-          <td data-day="thu" data-meal="lunch_2"></td>
-          <td data-day="fri" data-meal="lunch_2"></td>
-          <td data-day="sat" data-meal="lunch_2"></td>
-          <td data-day="sun" data-meal="lunch_2"></td>
-        </tr>
-        <tr>
-          <td>석식</td>
-          <td data-day="mon" data-meal="dinner"></td>
-          <td data-day="tue" data-meal="dinner"></td>
-          <td data-day="wed" data-meal="dinner"></td>
-          <td data-day="thu" data-meal="dinner"></td>
-          <td data-day="fri" data-meal="dinner"></td>
-          <td data-day="sat" data-meal="dinner"></td>
-          <td data-day="sun" data-meal="dinner"></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">원본 텍스트:</label>
-      <textarea class="form-control" name="rawText" rows="15" id="rawText"></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary w-100">변환하기</button>
-  </form>
-
-  <h3 class="section-title">결과:</h3>
-  <textarea id="resultBox" class="form-control" rows="15" readonly>여기에 결과가 표시됩니다</textarea>
+  </div>
 </div>
 
 <script>
@@ -354,7 +181,6 @@
   let isMouseDown = false;
   let dragMode = null;
 
-  // 선택된 값 업데이트
   function updateSelectedValues() {
     const activeCells = document.querySelectorAll('.cafeteriaTable:not(.hidden) td.active[data-day]');
     selectedValues = Array.from(activeCells).map(cell => ({
@@ -363,18 +189,36 @@
     }));
   }
 
-  // 현재 보이는 테이블에 이벤트 다시 붙이기
+  document.getElementById("convertBtn").addEventListener("click", async function () {
+    const formData = {
+      year: form.querySelector('input[name="year"]').value,
+      cafeteria: form.querySelector('select[name="cafeteria"]').value,
+      rawText: document.getElementById('rawText').value,
+      selectedMeals: selectedValues
+    };
+    try {
+      const res = await fetch('/convert-ajax', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const text = await res.text();
+      resultBox.value = text;
+    } catch (err) {
+      resultBox.value = '오류 발생: ' + err;
+    }
+  });
+
+
   function attachCellEvents() {
     const visibleCells = document.querySelectorAll('.cafeteriaTable:not(.hidden) td[data-day]');
-
     visibleCells.forEach(cell => {
       const newCell = cell.cloneNode(true);
       cell.parentNode.replaceChild(newCell, cell);
     });
-
     const freshCells = document.querySelectorAll('.cafeteriaTable:not(.hidden) td[data-day]');
     freshCells.forEach(cell => {
-      cell.addEventListener('mousedown', e => {
+      cell.addEventListener('mousedown', () => {
         isMouseDown = true;
         if (cell.classList.contains('active')) {
           dragMode = "remove";
@@ -385,21 +229,16 @@
         }
         updateSelectedValues();
       });
-
-      cell.addEventListener('mouseover', e => {
+      cell.addEventListener('mouseover', () => {
         if (isMouseDown) {
-          if (dragMode === "add") {
-            cell.classList.add('active');
-          } else if (dragMode === "remove") {
-            cell.classList.remove('active');
-          }
+          if (dragMode === "add") cell.classList.add('active');
+          else if (dragMode === "remove") cell.classList.remove('active');
           updateSelectedValues();
         }
       });
     });
   }
 
-  // 마우스 업 시 드래그 상태 초기화
   document.body.addEventListener('mouseup', () => {
     isMouseDown = false;
     dragMode = null;
@@ -445,9 +284,7 @@
     }
   });
 
-  // 최초 실행 시 기본 테이블에 이벤트 연결
   attachCellEvents();
 </script>
 </body>
 </html>
-
