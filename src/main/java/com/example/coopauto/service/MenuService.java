@@ -57,11 +57,12 @@ public class MenuService {
         for (MenuRecord rec : records) {
             String mealKor = toKoreanMealName(rec.meal);
             String corner = mapCorner(rec.meal);
-            String mealType = mapType(rec.menuItem);   // 기존에는 mapType(rec.meal)
+            String mealType = rec.menuItem.getName().contains("국밥") ? "국밥" : "백반";
+
 
 
             sb.append(String.format(
-                    "%d\t%d\t%d\t%s\t%d\t%s\t%s\t%s\t%s\t%d\t%d\t\t%d%n",
+                    "%d\t%d\t%d\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t\t%d%n",
                     rec.year,
                     rec.date.getMonthValue(),
                     rec.date.getDayOfMonth(),
@@ -70,6 +71,7 @@ public class MenuService {
                     rec.cafeteria,
                     mealKor,
                     corner,
+                    mealType,
                     rec.menuItem.getName(),
                     rec.menuItem.getPrice(),
                     rec.menuItem.getCost(),   // 원가
