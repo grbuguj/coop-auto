@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MenuService {
@@ -139,37 +141,56 @@ public class MenuService {
     }
 
     // 메뉴 블럭 파싱 (대표메뉴 + 숫자세트 매칭)
-    // 메뉴 블럭 파싱 (대표메뉴 + 숫자세트 매칭)
     private List<MenuItemDto> parseMenuItems(String rawText) {
         List<MenuItemDto> result = new ArrayList<>();
 
         // 1. 끼니별 섹션 분리
-        String[] mealSections = rawText.split("(?=조식|중식|석식|매점)");
+        String cleaned = rawText.replaceAll("(조식|중식|석식) 평균원가[^\\n]*", "");
+        String[] mealSections = cleaned.split("(?=\\n[ \t]*(조식|중식|석식|매점))");
+
+
+
+        int secIdx = 0;
 
         for (String section : mealSections) {
             section = section.trim();
             if (section.isEmpty()) continue;
 
-            // [예외처리] 매점/그린샐러드는 건너뛰기
-            if (section.startsWith("매점") || section.contains("그린샐러드")) {
+            // [예외처리] 매점
+            if (section.startsWith("매점")) {
                 continue;
             }
+
+            System.out.println("==== 섹션 " + (++secIdx) + " 시작 ====");
+            System.out.println(section);
+            System.out.println("==== 섹션 " + secIdx + " 끝 ====");
+
+
 
             // 2. 대표메뉴 추출 (블럭마다 첫 번째 ■)
             List<String> repMenus = new ArrayList<>();
             String[] blocks = section.split("\\n\\s*\\n");
+
+
+            int blkIdx = 0;
+            for (String block : blocks) {
+                System.out.println("  -- 블럭 " + (++blkIdx) + " --");
+                System.out.println(block);
+            }
+
+
             for (String block : blocks) {
                 String[] lines = block.split("\n");
                 for (String line : lines) {
                     line = line.trim();
                     if (line.startsWith("■")) {
                         String repMenu = line.replace("■", "")
-                                .replaceAll("\\(.*?\\)", "")   // 괄호 제거
+                                .replaceAll("\\(.*", "")
                                 .replaceAll("\\s*\\d+$", "")  // 끝 숫자 제거
                                 .trim();
 
                         // [예외처리] 대표메뉴가 "그린샐러드"면 skip
-                        if (repMenu.contains("그린샐러드")) {
+                        if (repMenu.contains("그린샐러드(완)")) {
                             continue;
                         }
 
@@ -262,16 +283,6 @@ public class MenuService {
             case "lunch_5b" -> "5코너(B)";
             default -> "1코너";
         };
-    }
-
-    // 메뉴 타입 매핑
-    // 메뉴 타입 매핑 (대표메뉴명 기반)
-    private String mapType(MenuItemDto menuItem) {
-        String name = menuItem.getName();
-        if (name != null && name.contains("국밥")) {
-            return "국밥";
-        }
-        return "백반";
     }
 
 }

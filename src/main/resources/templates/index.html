@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>식단 변환기</title>
+  <title>식단표 변환기</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <style>
     body {
@@ -56,7 +56,7 @@
 </head>
 <body>
 <div class="container">
-  <h2 class="mb-4 text-center">식단표 자동 변환기</h2>
+  <h2 class="mb-4 text-center">식단표 자동 변환기 Ver2.0</h2>
 
   <!-- 좌우 컬럼 동일 높이 -->
   <div class="row align-items-stretch">
@@ -170,7 +170,7 @@
       <div class="shadow p-4 bg-white rounded flex-fill d-flex flex-column">
         <button id="convertBtn" class="btn btn-primary w-100 mb-2">변환하기</button>
         <h3 class="section-title">결과:</h3>
-        <textarea id="resultBox" class="form-control flex-grow-1" readonly>여기에 결과가 표시됩니다</textarea>
+        <textarea id="resultBox" class="form-control flex-grow-1" readonly>여기에 결과가 표시됩니다. Made by 재웅</textarea>
       </div>
     </div>
   </div>
@@ -248,17 +248,27 @@
   const cafeteriaTables = document.querySelectorAll('.cafeteriaTable');
 
   cafeteriaSelect.addEventListener('change', () => {
-    cafeteriaTables.forEach(t => t.closest('.meal-table-wrapper').classList.add('hidden'));
+    // 모든 테이블 숨기기
+    cafeteriaTables.forEach(t => {
+      t.closest('.meal-table-wrapper').classList.add('hidden');
+      // [추가] 모든 td에서 active 제거
+      t.querySelectorAll('td.active').forEach(td => td.classList.remove('active'));
+    });
+
+    // 선택한 식당만 보이기
     const targetTable = document.querySelector(`.cafeteriaTable[data-cafeteria="${cafeteriaSelect.value}"]`);
     if (targetTable) {
       targetTable.closest('.meal-table-wrapper').classList.remove('hidden');
     }
+
+    // 상태 초기화
     isMouseDown = false;
     dragMode = null;
     selectedValues = [];
     updateSelectedValues();
     attachCellEvents();
   });
+
 
   const form = document.getElementById('menuForm');
   const resultBox = document.getElementById('resultBox');
