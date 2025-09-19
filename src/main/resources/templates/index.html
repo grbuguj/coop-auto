@@ -6,57 +6,107 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <style>
     body {
-      background-color: #f7f9fc;
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
       font-family: 'Noto Sans KR', sans-serif;
+      color: #2e7d32;
     }
     .container {
       max-width: 1200px;
       margin-top: 30px;
     }
-    textarea {
+    h2 {
+      font-weight: 700;
+      color: #1b5e20;
+    }
+    textarea, input, select {
       font-size: 14px;
-      white-space: pre;
       font-family: monospace;
+      border-radius: 10px;
+      border: 1px solid #c8e6c9;
+      padding: 10px;
+      transition: all 0.2s ease;
+    }
+    textarea:focus, input:focus, select:focus {
+      outline: none;
+      border-color: #66bb6a;
+      box-shadow: 0 0 8px rgba(102, 187, 106, 0.4);
     }
     .section-title {
       font-weight: bold;
       margin-bottom: 8px;
+      color: #388e3c;
+    }
+    .shadow {
+      box-shadow: 0 8px 20px rgba(56, 142, 60, 0.15) !important;
     }
     table.meal-table {
       text-align: center;
-      background: #fff;
-      border-radius: 10px;
+      background: #ffffff;
+      border-radius: 12px;
       overflow: hidden;
+      border: 2px solid #c8e6c9;
     }
     table.meal-table th {
-      background: #e9ecef;
+      background: #a5d6a7;
       font-weight: 600;
+      color: #1b5e20;
     }
     table.meal-table td {
       width: 90px;
       height: 55px;
       cursor: pointer;
-      background: #fff;
-      border: 1px solid #dee2e6;
-      transition: background 0.2s, color 0.2s;
+      background: #ffffff;
+      border: 1px solid #c8e6c9;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
       user-select: none;
     }
     table.meal-table td.active {
-      background: #4caf50;
-      color: white;
+      background: #43a047;
+      color: #ffffff;
       font-weight: bold;
+      transform: scale(1.05);
+      border: 1px solid #c8e6c9; /* 원래 테두리 유지 */
+      box-shadow: inset 0 0 0 1px #ffffff; /* ✅ 안쪽에 흰색 라인 추가 */
     }
+
     table.meal-table td:hover {
-      background: #d4edda;
+      background: #e8f5e9;
+    }
+    .btn-primary {
+      background: #43a047;
+      border: none;
+      font-weight: bold;
+      border-radius: 12px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover {
+      background: #2e7d32;
+      transform: translateY(-2px);
+    }
+    .btn-primary:active {
+      background: #1b5e20;
+      transform: scale(0.98);
     }
     .hidden {
       display: none;
+    }
+    #resultBox {
+      background: #f9fff9;
+      border: 1px solid #c8e6c9;
+      border-radius: 12px;
+      color: #1b5e20;
+      font-size: 14px;
+      padding: 12px;
+    }
+    label.form-label {
+      font-weight: 600;
+      color: #2e7d32;
     }
   </style>
 </head>
 <body>
 <div class="container">
-  <h2 class="mb-4 text-center">식단표 자동 변환기 Ver2.0</h2>
+  <h2 class="mb-4 text-center">🌱 생협 식단표 자동 변환기 Ver 2.0</h2>
 
   <!-- 좌우 컬럼 동일 높이 -->
   <div class="row align-items-stretch">
@@ -93,9 +143,6 @@
             <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
             <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
             <tr><td>중식-3코너</td><td data-day="mon" data-meal="lunch_3"></td><td data-day="tue" data-meal="lunch_3"></td><td data-day="wed" data-meal="lunch_3"></td><td data-day="thu" data-meal="lunch_3"></td><td data-day="fri" data-meal="lunch_3"></td><td data-day="sat" data-meal="lunch_3"></td><td data-day="sun" data-meal="lunch_3"></td></tr>
-            <tr><td>중식-4코너</td><td data-day="mon" data-meal="lunch_4"></td><td data-day="tue" data-meal="lunch_4"></td><td data-day="wed" data-meal="lunch_4"></td><td data-day="thu" data-meal="lunch_4"></td><td data-day="fri" data-meal="lunch_4"></td><td data-day="sat" data-meal="lunch_4"></td><td data-day="sun" data-meal="lunch_4"></td></tr>
-            <tr><td>중식-5코너(보쌈)</td><td data-day="mon" data-meal="lunch_5a"></td><td data-day="tue" data-meal="lunch_5a"></td><td data-day="wed" data-meal="lunch_5a"></td><td data-day="thu" data-meal="lunch_5a"></td><td data-day="fri" data-meal="lunch_5a"></td><td data-day="sat" data-meal="lunch_5a"></td><td data-day="sun" data-meal="lunch_5a"></td></tr>
-            <tr><td>중식-5코너(뚝배기찜닭)</td><td data-day="mon" data-meal="lunch_5b"></td><td data-day="tue" data-meal="lunch_5b"></td><td data-day="wed" data-meal="lunch_5b"></td><td data-day="thu" data-meal="lunch_5b"></td><td data-day="fri" data-meal="lunch_5b"></td><td data-day="sat" data-meal="lunch_5b"></td><td data-day="sun" data-meal="lunch_5b"></td></tr>
             <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
             </tbody>
           </table>
@@ -114,7 +161,6 @@
             <tbody>
             <tr><td>조식</td><td data-day="mon" data-meal="breakfast"></td><td data-day="tue" data-meal="breakfast"></td><td data-day="wed" data-meal="breakfast"></td><td data-day="thu" data-meal="breakfast"></td><td data-day="fri" data-meal="breakfast"></td><td data-day="sat" data-meal="breakfast"></td><td data-day="sun" data-meal="breakfast"></td></tr>
             <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
-            <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
             <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
             </tbody>
           </table>
@@ -133,7 +179,6 @@
             <tbody>
             <tr><td>조식</td><td data-day="mon" data-meal="breakfast"></td><td data-day="tue" data-meal="breakfast"></td><td data-day="wed" data-meal="breakfast"></td><td data-day="thu" data-meal="breakfast"></td><td data-day="fri" data-meal="breakfast"></td><td data-day="sat" data-meal="breakfast"></td><td data-day="sun" data-meal="breakfast"></td></tr>
             <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
-            <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
             <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
             </tbody>
           </table>
@@ -251,7 +296,7 @@
     // 모든 테이블 숨기기
     cafeteriaTables.forEach(t => {
       t.closest('.meal-table-wrapper').classList.add('hidden');
-      // [추가] 모든 td에서 active 제거
+      // 모든 td에서 active 제거
       t.querySelectorAll('td.active').forEach(td => td.classList.remove('active'));
     });
 
