@@ -108,6 +108,9 @@
       color: #1b5e20;
       font-size: 14px;
       padding: 12px;
+      white-space: pre;        /* 줄바꿈 그대로, 자동 개행 없음 */
+      overflow-x: auto;        /* 긴 줄은 가로 스크롤 */
+      font-family: monospace;  /* 가독성 좋은 고정폭 폰트 유지 */
     }
     label.form-label {
       font-weight: 600;
@@ -154,6 +157,9 @@
             <tr><td>중식-1코너</td><td data-day="mon" data-meal="lunch_1"></td><td data-day="tue" data-meal="lunch_1"></td><td data-day="wed" data-meal="lunch_1"></td><td data-day="thu" data-meal="lunch_1"></td><td data-day="fri" data-meal="lunch_1"></td><td data-day="sat" data-meal="lunch_1"></td><td data-day="sun" data-meal="lunch_1"></td></tr>
             <tr><td>중식-2코너</td><td data-day="mon" data-meal="lunch_2"></td><td data-day="tue" data-meal="lunch_2"></td><td data-day="wed" data-meal="lunch_2"></td><td data-day="thu" data-meal="lunch_2"></td><td data-day="fri" data-meal="lunch_2"></td><td data-day="sat" data-meal="lunch_2"></td><td data-day="sun" data-meal="lunch_2"></td></tr>
             <tr><td>중식-3코너</td><td data-day="mon" data-meal="lunch_3"></td><td data-day="tue" data-meal="lunch_3"></td><td data-day="wed" data-meal="lunch_3"></td><td data-day="thu" data-meal="lunch_3"></td><td data-day="fri" data-meal="lunch_3"></td><td data-day="sat" data-meal="lunch_3"></td><td data-day="sun" data-meal="lunch_3"></td></tr>
+            <tr><td>중식-4코너</td><td data-day="mon" data-meal="lunch_4"></td><td data-day="tue" data-meal="lunch_4"></td><td data-day="wed" data-meal="lunch_4"></td><td data-day="thu" data-meal="lunch_4"></td><td data-day="fri" data-meal="lunch_4"></td><td data-day="sat" data-meal="lunch_4"></td><td data-day="sun" data-meal="lunch_4"></td></tr>
+            <tr><td>중식-5코너A</td><td data-day="mon" data-meal="lunch_5a"></td><td data-day="tue" data-meal="lunch_5a"></td><td data-day="wed" data-meal="lunch_5a"></td><td data-day="thu" data-meal="lunch_5a"></td><td data-day="fri" data-meal="lunch_5a"></td><td data-day="sat" data-meal="lunch_5a"></td><td data-day="sun" data-meal="lunch_5a"></td></tr>
+            <tr><td>중식-5코너B</td><td data-day="mon" data-meal="lunch_5b"></td><td data-day="tue" data-meal="lunch_5b"></td><td data-day="wed" data-meal="lunch_5b"></td><td data-day="thu" data-meal="lunch_5b"></td><td data-day="fri" data-meal="lunch_5b"></td><td data-day="sat" data-meal="lunch_5b"></td><td data-day="sun" data-meal="lunch_5b"></td></tr>
             <tr><td>석식</td><td data-day="mon" data-meal="dinner"></td><td data-day="tue" data-meal="dinner"></td><td data-day="wed" data-meal="dinner"></td><td data-day="thu" data-meal="dinner"></td><td data-day="fri" data-meal="dinner"></td><td data-day="sat" data-meal="dinner"></td><td data-day="sun" data-meal="dinner"></td></tr>
             </tbody>
           </table>
@@ -224,7 +230,11 @@
     <!-- 오른쪽 -->
     <div class="col-md-6 d-flex">
       <div class="shadow p-4 bg-white rounded flex-fill d-flex flex-column">
-        <button id="convertBtn" class="btn btn-primary w-100 mb-2">변환하기</button>
+        <div class="d-flex mb-2 align-items-center">
+          <button id="convertBtn" class="btn btn-success flex-grow-1 me-2">변환하기</button>
+          <button id="copyBtn" class="btn btn-outline-secondary me-2">결과 복사</button>
+          <span id="copyMsg" class="text-success small" style="display:none;">복사 성공!</span>
+        </div>
         <h3 class="section-title">결과:</h3>
         <textarea id="resultBox" class="form-control flex-grow-1" readonly>여기에 결과가 표시됩니다. Made by 재웅</textarea>
       </div>
@@ -349,6 +359,24 @@
       resultBox.value = '오류 발생: ' + err;
     }
   });
+
+  // 복사 버튼 기능
+  document.getElementById("copyBtn").addEventListener("click", () => {
+    const resultText = document.getElementById("resultBox").value;
+    if (!resultText.trim()) return;
+
+    navigator.clipboard.writeText(resultText).then(() => {
+      const msg = document.getElementById("copyMsg");
+      msg.style.display = "inline";     // 표시
+      setTimeout(() => {
+        msg.style.display = "none";     // 2초 뒤 숨기기
+      }, 2000);
+    }).catch(err => {
+      console.error("복사 실패:", err);
+    });
+  });
+
+
 
   attachCellEvents();
 </script>
